@@ -6,7 +6,8 @@ class PasswordGeneratorPanel extends React.Component{
   constructor(){
     super();
     this.state = {
-      TextFieldText : "Press Go"
+      PasswordLength: "30",
+      TextFieldText : "Press Go to generate a password"
     }
   }
 
@@ -16,7 +17,8 @@ class PasswordGeneratorPanel extends React.Component{
     return([
       this.RenderHeading(),
       this.RenderTextField(),
-      this.RenderStartButton()
+      this.RenderStartButton(),
+      this.RenderLengthPicker()
     ]);
   }
 
@@ -40,13 +42,30 @@ class PasswordGeneratorPanel extends React.Component{
       );
     }
 
+    RenderLengthPicker(){
+      return([
+        <label className = "LengthPickerLabel">Password Lenght</label>,
+        <input className = "LengthPicker" value={this.state.PasswordLength} onChange={this.onHandleChangeNumber.bind(this)}></input>
+      ])
+    }
+
+    onHandleChangeNumber(event){
+      var input = event.target.value;
+      if(!Number(input)){
+        return;
+      }else if(input > 200){
+        return;
+      }
+      this.setState({PasswordLength: input});
+    }
+
     GenerateRandomString(){
       var RandomNumber = "";
-      for(this.i = 0; this.i <= 30 - 1; this.i++){
+      for(this.i = 0; this.i <= this.state.PasswordLength - 1; this.i++){
         RandomNumber = RandomNumber + this.data[(Math.floor(Math.random() * 62))];
       }
-      var RandomNumber
       this.setState({TextFieldText: RandomNumber});
+      console.log(this.state.PasswordLength);
     }
 }
 
